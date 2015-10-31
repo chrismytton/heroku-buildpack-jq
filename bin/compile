@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+VENDOR_DIR="$BUILD_DIR/vendor"
+PROFILE_PATH="$BUILD_DIR/.profile.d/libjq.sh"
+
+mkdir -p $(dirname $PROFILE_PATH)
+mkdir -p $VENDOR_DIR
+
+function set-default-env (){
+  echo "export $1=\$$1:/app/vendor/$2" >> $PROFILE_PATH
+}
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+set-default-env LD_LIBRARY_PATH "lib"
+export LD_LIBRARY_PATH="${VENDOR_DIR}/lib"
+echo 'export CONFIGURE_ARGS="--with-opt-dir=/app/vendor"' >> $PROFILE_PATH
+export CONFIGURE_ARGS="--with-opt-dir=${VENDOR_DIR}"
+
+cd /tmp
+git clone https://github.com/stedolan/jq.git
+cd jq
+autoreconf -i
+./configure --enable-shared --prefix="$VENDOR_DIR"
+make install
+
+ls -laF "$VENDOR_DIR"
+env
