@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "libjq"
+echo "jq"
 exit 0

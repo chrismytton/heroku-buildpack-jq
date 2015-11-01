@@ -5,7 +5,7 @@ set -eo pipefail
 BUILD_DIR=$1
 CACHE_DIR=$2
 VENDOR_DIR="$BUILD_DIR/vendor"
-PROFILE_PATH="$BUILD_DIR/.profile.d/libjq.sh"
+PROFILE_PATH="$BUILD_DIR/.profile.d/jq.sh"
 
 mkdir -p $(dirname $PROFILE_PATH)
 mkdir -p $VENDOR_DIR
