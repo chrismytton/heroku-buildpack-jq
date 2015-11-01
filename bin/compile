@@ -21,4 +21,5 @@ indent() {
 set-default-env LD_LIBRARY_PATH "jq/lib"
 set-default-env PATH "jq/bin"
 
+cd $BUILD_DIR
 curl -fsSL https://s3.amazonaws.com/chrismytton-public/jq-1.5-heroku.tar.gz | tar xzvf -
