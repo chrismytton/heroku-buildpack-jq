@@ -4,22 +4,20 @@ set -eo pipefail
 
 BUILD_DIR=$1
 CACHE_DIR=$2
-VENDOR_DIR="$BUILD_DIR/vendor"
-PROFILE_PATH="$BUILD_DIR/.profile.d/jq.sh"
 
+PROFILE_PATH="$BUILD_DIR/.profile.d/jq.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-mkdir -p $VENDOR_DIR
 
 function set-default-env (){
-  echo "export $1=\$$1:/app/vendor/$2" >> $PROFILE_PATH
+  echo "export $1=\$$1:/app/vendor/jq/$2" >> $PROFILE_PATH
 }
+
+set-default-env LD_LIBRARY_PATH "lib"
+set-default-env PATH "bin"
 
 indent() {
   sed -u 's/^/       /'
 }
 
-set-default-env LD_LIBRARY_PATH "jq/lib"
-set-default-env PATH "jq/bin"
-
 cd $BUILD_DIR
-curl -fsSL https://s3.amazonaws.com/chrismytton-public/jq-1.5-heroku.tar.gz | tar xzvf -
+curl -fsSL https://s3.amazonaws.com/chrismytton-public/jq-1.5-heroku.tar.gz | tar xzf - | indent
