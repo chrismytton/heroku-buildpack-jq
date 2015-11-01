@@ -30,5 +30,7 @@ autoreconf -i
 ./configure --enable-shared --prefix="$VENDOR_DIR"
 make install
 
-ls -laF "$VENDOR_DIR"
-env
+echo "-----> exporting LD_LIBRARY_PATH"
+PROFILE_PATH="$BUILD_DIR/.profile.d/libjq.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:vendor/lib"' >> $PROFILE_PATH
