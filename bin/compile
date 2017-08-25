@@ -20,4 +20,4 @@ indent() {
 }
 
 cd $BUILD_DIR
-curl -fsSL https://s3.amazonaws.com/chrismytton-public/jq-1.5-heroku.tar.gz | tar xzf - | indent
+curl -fsSL https://github.com/chrismytton/heroku-buildpack-jq/raw/master/jq-1.5-heroku.tar.gz | tar xzf - | indent
