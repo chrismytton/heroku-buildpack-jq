@@ -8,16 +8,28 @@ CACHE_DIR=$2
 PROFILE_PATH="$BUILD_DIR/.profile.d/jq.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 
-function set-default-env (){
-  echo "export $1=\$$1:/app/vendor/jq/$2" >> $PROFILE_PATH
+function set-env (){
+  # We use the conditional parameter expansion form (eg `${FOO:+:$FOO}`) to avoid adding a redundant
+  # delimiter if the env var wasn't already set (which is often the case for LD_LIBRARY_PATH):
+  # https://stackoverflow.com/a/16296567
+  echo "export $1=/app/vendor/jq/$2\${$1:+:\$$1}" >> $PROFILE_PATH
 }
 
-set-default-env LD_LIBRARY_PATH "lib"
-set-default-env PATH "bin"
+set-env LD_LIBRARY_PATH "lib"
+set-env PATH "bin"
 
 indent() {
   sed -u 's/^/       /'
 }
 
 cd $BUILD_DIR
+
+if command -v jq > /dev/null; then
+    echo " !     jq is already installed! It has been added to both Heroku's build and run images as of:" >&2
+    echo " !     https://devcenter.heroku.com/changelog-items/2893" >&2
+    echo " !     " >&2
+    echo " !     As such, this buildpack is no longer required, and can be removed using:" >&2
+    echo " !     $ heroku buildpacks:remove https://github.com/chrismytton/heroku-buildpack-jq.git" >&2
+fi
+
 curl -fsSL https://github.com/chrismytton/heroku-buildpack-jq/raw/master/jq-1.5-heroku.tar.gz | tar xzf - | indent

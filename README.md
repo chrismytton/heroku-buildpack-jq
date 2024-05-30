@@ -1,5 +1,9 @@
 # heroku-buildpack-jq
 
+> [!WARNING]
+> JQ is [now installed](https://devcenter.heroku.com/changelog-items/2893) in both Heroku's build and run images.
+> As such, this buildpack is no longer required to use JQ on Heroku.
+
 Use [Heroku multi-buildpacks](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app).
 
 For example:
